@@ -1,3 +1,4 @@
+import Divider from "@/components/Divider";
 import ListMeanings from "@/components/ListMeanings";
 import ListSelectedMeanings from "@/components/ListSelectedMeanings";
 import SuperButton from "@/components/SuperButton";
@@ -47,6 +48,7 @@ export default function Index() {
         {meanings.length > 0 && (
           <ListMeanings data={meanings} handlePress={addMeaningToList} />
         )}
+        <Divider />
         {selectedMeanings.length > 0 && (
           <ListSelectedMeanings
             data={selectedMeanings}
