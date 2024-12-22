@@ -1,4 +1,5 @@
 import ListMeanings from "@/components/ListMeanings";
+import ListSelectedMeanings from "@/components/ListSelectedMeanings";
 import SuperButton from "@/components/SuperButton";
 import { getDataFromGPT } from "@/services/ai/get_data";
 import styles from "@/styles";
@@ -9,6 +10,7 @@ import { SafeAreaView, Text, TextInput, View } from "react-native";
 export default function Index() {
   const [acronym, setAcronym] = useState("");
   const [meanings, setMeanings] = useState<Array<Sigla>>([]);
+  const [selectedMeanings, setSelectedMeanings] = useState<Array<string>>([]);
 
   const getMeanings = async () => {
     try {
@@ -19,6 +21,13 @@ export default function Index() {
     } catch (error) {
       alert(error);
     }
+  };
+
+  const addMeaningToList = (sigla: Sigla) => {
+    setSelectedMeanings((prevState) => [
+      ...prevState,
+      `${acronym} - ${sigla.significado}`,
+    ]);
   };
 
   return (
@@ -35,7 +44,18 @@ export default function Index() {
         onPress={getMeanings}
       />
       {meanings.length > 0 && (
-        <ListMeanings data={meanings} handlePress={() => {}} />
+        <ListMeanings data={meanings} handlePress={addMeaningToList} />
+      )}
+      {selectedMeanings.length > 0 && (
+        
+        <ListSelectedMeanings
+          data={selectedMeanings}
+          handlePress={(sigla) =>
+            setSelectedMeanings(
+              selectedMeanings.filter((item) => item !== sigla)
+            )
+          }
+        />
       )}
     </View>
   );
