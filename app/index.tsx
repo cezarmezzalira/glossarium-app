@@ -5,7 +5,7 @@ import { getDataFromGPT } from "@/services/ai/get_data";
 import styles from "@/styles";
 import { Sigla } from "@/types";
 import { useState } from "react";
-import { SafeAreaView, Text, TextInput, View } from "react-native";
+import { SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
 
 export default function Index() {
   const [acronym, setAcronym] = useState("");
@@ -31,32 +31,33 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={setAcronym}
-        value={acronym}
-        placeholder="Informe a sigla para pesquisar o significado"
-      />
-      <SuperButton
-        iconRight={"search1"}
-        title="Pesquisar Significados"
-        onPress={getMeanings}
-      />
-      {meanings.length > 0 && (
-        <ListMeanings data={meanings} handlePress={addMeaningToList} />
-      )}
-      {selectedMeanings.length > 0 && (
-        
-        <ListSelectedMeanings
-          data={selectedMeanings}
-          handlePress={(sigla) =>
-            setSelectedMeanings(
-              selectedMeanings.filter((item) => item !== sigla)
-            )
-          }
+    <ScrollView style={styles.container}>
+      <View style={styles.viewContainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setAcronym}
+          value={acronym}
+          placeholder="Informe a sigla para pesquisar o significado"
         />
-      )}
-    </View>
+        <SuperButton
+          iconRight={"search1"}
+          title="Pesquisar Significados"
+          onPress={getMeanings}
+        />
+        {meanings.length > 0 && (
+          <ListMeanings data={meanings} handlePress={addMeaningToList} />
+        )}
+        {selectedMeanings.length > 0 && (
+          <ListSelectedMeanings
+            data={selectedMeanings}
+            handlePress={(sigla) =>
+              setSelectedMeanings(
+                selectedMeanings.filter((item) => item !== sigla)
+              )
+            }
+          />
+        )}
+      </View>
+    </ScrollView>
   );
 }
