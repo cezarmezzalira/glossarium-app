@@ -6,7 +6,9 @@ import { getDataFromGPT } from "@/services/ai/get_data";
 import styles from "@/styles";
 import { Sigla } from "@/types";
 import { useState } from "react";
-import { SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
+import { ScrollView, TextInput, View } from "react-native";
+import * as Print from "expo-print";
+import { shareAsync } from "expo-sharing";
 
 export default function Index() {
   const [acronym, setAcronym] = useState("");
@@ -22,6 +24,33 @@ export default function Index() {
     } catch (error) {
       alert(error);
     }
+  };
+
+  const getHTML = () => {
+    const html = `
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+          </head>
+          <body style="font-family: Helvetica Neue; font-weight: normal; display: flex; flex-direction: column; padding: 30px;">
+            <h1 style="font-size: 50px;">
+              Lista de Siglas
+            </h1>
+            <ul style="list-style-type: none; display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0;">
+              ${selectedMeanings.map((sigla) => `<li>${sigla}</li>`).join("")}
+            </ul>
+          </body>
+        </html>
+    `;
+    return html;
+  };
+
+  const getPDF = async () => {
+    const html = getHTML();
+    console.log(html);
+    const { uri } = await Print.printToFileAsync({ html });
+    console.log("File has been saved to:", uri);
+    await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
   };
 
   const addMeaningToList = (sigla: Sigla) => {
@@ -62,7 +91,7 @@ export default function Index() {
             <SuperButton
               iconRight={"pdffile1"}
               title="Gerar PDF"
-              onPress={getMeanings}
+              onPress={getPDF}
             />
           </View>
         )}
