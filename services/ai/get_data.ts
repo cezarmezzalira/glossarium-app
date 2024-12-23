@@ -1,7 +1,7 @@
 const Groq = require("groq-sdk");
 
 const groq = new Groq({
-  apiKey: "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",
+  apiKey: "API_KEY",
 });
 
 export async function getDataFromGPT(acronym: string) {
