@@ -50,14 +50,21 @@ export default function Index() {
         )}
         <Divider />
         {selectedMeanings.length > 0 && (
-          <ListSelectedMeanings
-            data={selectedMeanings}
-            handlePress={(sigla) =>
-              setSelectedMeanings(
-                selectedMeanings.filter((item) => item !== sigla)
-              )
-            }
-          />
+          <View style={styles.viewContainer}>
+            <ListSelectedMeanings
+              data={selectedMeanings}
+              handlePress={(sigla) =>
+                setSelectedMeanings(
+                  selectedMeanings.filter((item) => item !== sigla)
+                )
+              }
+            />
+            <SuperButton
+              iconRight={"pdffile1"}
+              title="Gerar PDF"
+              onPress={getMeanings}
+            />
+          </View>
         )}
       </View>
     </ScrollView>

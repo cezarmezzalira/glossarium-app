@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     rowGap: 10,
+    width: "100%",
   },
   input: {
     width: "100%",
